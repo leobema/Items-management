@@ -9,7 +9,7 @@ function PurchaseDetails() {
   const [products, setAllProducts] = useState([]);
   const [updatePage, setUpdatePage] = useState(true);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [updatePurchase, setUpdatePurchase] = useState([]);
+  const [updatePurchaseData, setUpdatePurchaseData] = useState([]);
 
   const authContext = useContext(AuthContext);
 
@@ -28,8 +28,6 @@ function PurchaseDetails() {
       .catch((err) => console.log(err));
   };
 
-
-
   // Fetching Data of All Products
   const fetchProductsData = () => {
     fetch(`http://localhost:4000/api/product/get/${authContext.user}`)
@@ -45,26 +43,25 @@ function PurchaseDetails() {
     setPurchaseModal(!showPurchaseModal);
   };
 
-    // Modal for Product UPDATE
-    const updatePurchaseModalSetting = (selectedProductData) => {
-      console.log("Clicked: edit");
-      setUpdatePurchase(selectedProductData);
-      setShowUpdateModal(!showUpdateModal);
-    };
-  
-  
-    // Delete item
-    const deleteItem = (id) => {
-      console.log("Purchase ID: ", id);
-      console.log(`http://localhost:4000/api/purchase/delete/${id}`);
-      fetch(`http://localhost:4000/api/purchase/delete/${id}`)
-        .then((response) => response.json())
-        .then((data) => {
-          setUpdatePage(!updatePage);
-        });
-    };
+  // Modal for Product UPDATE
+  const updatePurchaseModalSetting = (selectedPurchaseData) => {
+    console.log("Clicked: edit");
+    setUpdatePurchaseData(selectedPurchaseData);
+    setShowUpdateModal(!showUpdateModal);
+  };
 
-  
+
+  // Delete item
+  const deleteItem = (id) => {
+    console.log("Purchase ID: ", id);
+    console.log(`http://localhost:4000/api/purchase/delete/${id}`);
+    fetch(`http://localhost:4000/api/purchase/delete/${id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setUpdatePage(!updatePage);
+      });
+  };
+
   // Handle Page Update
   const handlePageUpdate = () => {
     setUpdatePage(!updatePage);
@@ -83,7 +80,7 @@ function PurchaseDetails() {
         )},
          {showUpdateModal && (
           <UpdatePurchase
-            updateProductData={updatePurchase}
+            updatePurchaseData={updatePurchaseData}
             updateModalSetting={updatePurchaseModalSetting}
           />
         )}

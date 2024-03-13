@@ -12,18 +12,27 @@ const PurchaseSchema = new mongoose.Schema(
       ref: "product",
       required: true,
     },
-    QuantityPurchased: {
+    name: {
+      type: String,
+      required: false,
+    },
+    design: {
+      type: String,
+      required: false,
+    },
+    stock: {
       type: Number,
-      required: true,
+      required: false,
     },
     PurchaseDate: {
       type: String,
-      required: true,
+      required: false,
     },
     TotalPurchaseAmount: {
       type: Number,
-      required: true,
+      required: false,
     },
+    description: String,
   },
   { timestamps: true }
 );

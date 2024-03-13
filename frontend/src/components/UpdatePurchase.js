@@ -8,11 +8,11 @@ export default function UpdatePurchase({
 }) {
   const { _id, name, design, description, stock } = updatePurchaseData;
   const [purchase, setPurchase] = useState({
-    purchaseID: _id,
+    productID: _id,
     name: name,
     design: design,
     description: description,
-    stock: stock,
+    stock: stock, 
   });
   const [open, setOpen] = useState(true);
   const cancelButtonRef = useRef(null);
@@ -23,7 +23,7 @@ export default function UpdatePurchase({
   };
 
   const updatePurchase = () => {
-    fetch("http://localhost:4000/api/product/update", {
+    fetch("http://localhost:4000/api/purchase/update", {
       method: "POST",
       headers: {
         "Content-type": "application/json",

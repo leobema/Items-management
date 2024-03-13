@@ -50,7 +50,7 @@ const deleteSelectedPurchase = async (req, res) => {
   );
 
   res.json({ deleteProduct, deletePurchaseProduct });
-};
+}; */
 
 // Update Selected Purchase
 const updateSelectedPurchase = async (req, res) => {
@@ -72,7 +72,7 @@ const updateSelectedPurchase = async (req, res) => {
     console.log(error);
     res.status(402).send("Error");
   }
-}; */
+}; 
 
 
-module.exports = { addPurchase, getPurchaseData, getTotalPurchaseAmount };
+module.exports = { addPurchase, getPurchaseData, getTotalPurchaseAmount, updateSelectedPurchase };

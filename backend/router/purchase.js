@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const purchase = require("../controller/purchase");
+const Product = require("../models/Product");
 
 // Add Purchase
 app.post("/add", purchase.addPurchase);
@@ -9,6 +10,9 @@ app.post("/add", purchase.addPurchase);
 app.get("/get/:userID", purchase.getPurchaseData);
 
 app.get("/get/:userID/totalpurchaseamount", purchase.getTotalPurchaseAmount);
+
+// Update Selected Product
+app.post("/update", purchase.updateSelectedPurchase);
 
 
 

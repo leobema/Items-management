@@ -11,7 +11,7 @@ export default function AddPurchaseDetails({
   const [purchase, setPurchase] = useState({
     userID: authContext.user,
     productID: "",
-    quantityPurchased: "",
+    stock: "",
     purchaseDate: "",
     totalPurchaseAmount: "",
   });
@@ -119,16 +119,60 @@ export default function AddPurchaseDetails({
                           </div>
                           <div>
                             <label
-                              htmlFor="quantityPurchased"
+                              htmlFor="productID"
+                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >
+                              Nombre de Producto
+                            </label>
+                            <select
+                              id="productID"
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                              name="productID"
+                              onChange={(e) =>
+                                handleInputChange(e.target.name, e.target.value)
+                              }
+                            >
+                              <option selected="">Select Products</option>
+                              {products.map((element, index) => {
+                                return (
+                                  <option key={element._id} value={element._id}>
+                                    {element.design}
+                                  </option>
+                                );
+                              })}
+                            </select>
+                          </div>
+                         {/*  <div>
+                            <label
+                              htmlFor="manufacturer"
+                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >
+                              Diseño
+                            </label>
+                            <input
+                              type="text"
+                              name="design"
+                              id="design"
+                              value={purchase.design}
+                              onChange={(e) =>
+                                handleInputChange(e.target.name, e.target.value)
+                              }
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                              placeholder="Ej. Sonic"
+                            />
+                          </div> */}
+                          <div>
+                            <label
+                              for="stock"
                               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
                               Cantidad
                             </label>
                             <input
                               type="number"
-                              name="quantityPurchased"
-                              id="quantityPurchased"
-                              value={purchase.quantityPurchased}
+                              name="stock"
+                              id="stock"
+                              value={purchase.stock}
                               onChange={(e) =>
                                 handleInputChange(e.target.name, e.target.value)
                               }

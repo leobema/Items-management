@@ -53,7 +53,7 @@ function PurchaseDetails() {
 
   // Delete item
   const deleteItem = (id) => {
-    console.log("Purchase ID: ", id);
+    console.log("Product ID: ", id);
     console.log(`http://localhost:4000/api/purchase/delete/${id}`);
     fetch(`http://localhost:4000/api/purchase/delete/${id}`)
       .then((response) => response.json())
@@ -107,6 +107,9 @@ function PurchaseDetails() {
                   Producto
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                  Diseño
+                </th>
+                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
                   Cantidad
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
@@ -128,11 +131,14 @@ function PurchaseDetails() {
                     <td className="whitespace-nowrap px-4 py-2  text-gray-900">
                       {element.ProductID?.name}
                     </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                      {element.QuantityPurchased}
+                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                      {element.design}
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                      {new Date(element.PurchaseDate).toLocaleDateString() ==
+                      {element.stock}
+                    </td> 
+                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                      {new Date(element.PurchaseDate).toLocaleDateString() ===
                       new Date().toLocaleDateString()
                         ? "Today"
                         : element.PurchaseDate}

@@ -12,10 +12,12 @@ export default function AddSale({
   const [sale, setSale] = useState({
     userID: authContext.user,
     productID: "",
+    design: "",
     storeID: "",
     stockSold: "",
     saleDate: "",
     totalSaleAmount: "",
+    description: "",
   });
   const [open, setOpen] = useState(true);
   const cancelButtonRef = useRef(null);
@@ -89,7 +91,7 @@ export default function AddSale({
                         as="h3"
                         className="text-lg  py-4 font-semibold leading-6 text-gray-900 "
                       >
-                        Add Sale
+                        Agregar Venta
                       </Dialog.Title>
                       <form action="#">
                         <div className="grid gap-4 mb-4 sm:grid-cols-2">
@@ -98,7 +100,7 @@ export default function AddSale({
                               htmlFor="productID"
                               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
-                              Product Name
+                              Producto
                             </label>
                             <select
                               id="productID"
@@ -113,6 +115,31 @@ export default function AddSale({
                                 return (
                                   <option key={element._id} value={element._id}>
                                     {element.name}
+                                  </option>
+                                );
+                              })}
+                            </select>
+                          </div>
+                          <div>
+                            <label
+                              htmlFor="design"
+                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >
+                              Diseño
+                            </label>
+                            <select
+                              id="design"
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                              name="design"
+                              onChange={(e) =>
+                                handleInputChange(e.target.name, e.target.value)
+                              }
+                            >
+                              <option selected="">Select Products</option>
+                              {products.map((element, index) => {
+                                return (
+                                  <option key={element._id} value={element._id}>
+                                    {element.design}
                                   </option>
                                 );
                               })}
@@ -204,6 +231,31 @@ export default function AddSale({
                                 handleInputChange(e.target.name, e.target.value)
                               }
                             />
+                          </div>
+                          <div className="sm:col-span-2">
+                            <label
+                              htmlFor="description"
+                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >
+                              Descripcion
+                            </label>
+                            <textarea
+                              id="description"
+                              rows="5"
+                              name="description"
+                              className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                              placeholder="Descripcion del producto..."
+                              value={sale.description}
+                              onChange={(e) =>
+                                handleInputChange(e.target.name, e.target.value)
+                              }
+                            >
+                              Standard glass, 3.8GHz 8-core 10th-generation
+                              Intel Core i7 processor, Turbo Boost up to 5.0GHz,
+                              16GB 2666MHz DDR4 memory, Radeon Pro 5500 XT with
+                              8GB of GDDR6 memory, 256GB SSD storage, Gigabit
+                              Ethernet, Magic Mouse 2, Magic Keyboard - US
+                            </textarea>
                           </div>
                         </div>
                         <div className="flex items-center space-x-4">

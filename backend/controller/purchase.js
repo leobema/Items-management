@@ -6,15 +6,18 @@ const addPurchase = (req, res) => {
   const addPurchaseDetails = new Purchase({
     userID: req.body.userID,
     ProductID: req.body.productID,
-    QuantityPurchased: req.body.quantityPurchased,
+    name: req.body.name,
+    design: req.body.design,
+    stock: req.body.stock,
     PurchaseDate: req.body.purchaseDate,
     TotalPurchaseAmount: req.body.totalPurchaseAmount,
+    description: req.body.description,
   });
 
   addPurchaseDetails
     .save()
     .then((result) => {
-      purchaseStock(req.body.productID, req.body.quantityPurchased);
+      purchaseStock(req.body.productID, req.body.stock);
       res.status(200).send(result);
     })
     .catch((err) => {
@@ -28,6 +31,14 @@ const getPurchaseData = async (req, res) => {
     .sort({ _id: -1 })
     .populate("ProductID"); // -1 for descending order
   res.json(findAllPurchaseData);
+};
+
+// Delete Selected Purchase
+const deleteSelectedPurchase = async (req, res) => {
+  const deletePurchase = await Purchase.deleteOne(
+    { _id: req.params.id }
+  );
+  res.json({ deletePurchase });
 };
 
 // Get total purchase amount
@@ -55,7 +66,7 @@ const deleteSelectedPurchase = async (req, res) => {
 // Update Selected Purchase
 const updateSelectedPurchase = async (req, res) => {
   try {
-    const updatedResult = await Product.findByIdAndUpdate(
+    const updatedResult = await Purchase.findByIdAndUpdate(
       { _id: req.body.productID },
       {
         name: req.body.name,
@@ -75,4 +86,4 @@ const updateSelectedPurchase = async (req, res) => {
 }; 
 
 
-module.exports = { addPurchase, getPurchaseData, getTotalPurchaseAmount, updateSelectedPurchase };
+module.exports = { addPurchase, getPurchaseData, getTotalPurchaseAmount, updateSelectedPurchase, deleteSelectedPurchase };

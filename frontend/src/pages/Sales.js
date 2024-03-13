@@ -51,6 +51,17 @@ function Sales() {
     setShowSaleModal(!showSaleModal);
   };
 
+  // Delete item
+  const deleteItem = (id) => {
+    console.log("Sales ID: ", id);
+    console.log(`http://localhost:4000/api/sales/delete/${id}`);
+    fetch(`http://localhost:4000/api/sales/delete/${id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setUpdatePage(!updatePage);
+      });
+  };
+
   // Handle Page Update
   const handlePageUpdate = () => {
     setUpdatePage(!updatePage);
@@ -91,16 +102,25 @@ function Sales() {
                   Producto
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
-                  Punto de Venta
+                  Diseño
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
-                  Cantidad Vendida
+                  Tipo de Venta
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
-                  Total Monto Venta
+                  Und Vendidas
+                </th>
+                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                  Precio/und
+                </th>
+                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                  Total $
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
                   Fecha
+                </th>
+                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                  Observación
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
                   Acción
@@ -116,6 +136,9 @@ function Sales() {
                       {element.ProductID?.name}
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                      {element.ProductID?.design}
+                    </td>
+                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                       {element.StoreID?.name}
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
@@ -125,7 +148,13 @@ function Sales() {
                       ${element.TotalSaleAmount}
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                      ${element.TotalSaleAmount*element.StockSold}
+                    </td>
+                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                       {element.SaleDate}
+                    </td>
+                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                      {element.description}
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                       <span
@@ -136,7 +165,7 @@ function Sales() {
                       </span>
                       <span
                         className="text-red-600 px-2 cursor-pointer"
-                        //onClick={() => deleteItem(element._id)}
+                        onClick={() => deleteItem(element._id)}
                       >
                         Borrar
                       </span>

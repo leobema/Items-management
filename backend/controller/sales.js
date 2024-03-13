@@ -6,10 +6,12 @@ const addSales = (req, res) => {
   const addSale = new Sales({
     userID: req.body.userID,
     ProductID: req.body.productID,
+    design: req.body.design,
     StoreID: req.body.storeID,
     StockSold: req.body.stockSold,
     SaleDate: req.body.saleDate,
     TotalSaleAmount: req.body.totalSaleAmount,
+    description: req.body.description,
   });
 
   addSale
@@ -30,6 +32,14 @@ const getSalesData = async (req, res) => {
     .populate("ProductID")
     .populate("StoreID"); // -1 for descending order
   res.json(findAllSalesData);
+};
+
+// Delete Selected Sales
+const deleteSelectedSales = async (req, res) => {
+  const deleteSales = await Sales.deleteOne(
+    { _id: req.params.id }
+  );
+  res.json({ deleteSales });
 };
 
 // Get total sales amount
@@ -67,4 +77,4 @@ const getMonthlySales = async (req, res) => {
 
 
 
-module.exports = { addSales, getMonthlySales, getSalesData,  getTotalSalesAmount};
+module.exports = { addSales, getMonthlySales, getSalesData,  getTotalSalesAmount, deleteSelectedSales};

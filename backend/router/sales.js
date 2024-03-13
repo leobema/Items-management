@@ -9,6 +9,9 @@ app.post("/add", sales.addSales);
 app.get("/get/:userID", sales.getSalesData);
 app.get("/getmonthly", sales.getMonthlySales);
 
+// Delete Selected Sales Item
+app.get("/delete/:id", sales.deleteSelectedSales);
+
 
 app.get("/get/:userID/totalsaleamount", sales.getTotalSalesAmount);
 

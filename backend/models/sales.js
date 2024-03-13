@@ -12,6 +12,11 @@ const SaleSchema = new mongoose.Schema(
       ref: "product",
       required: true,
     },
+    design: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "design",
+      required: true,
+    },
     StoreID: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "store",
@@ -28,6 +33,10 @@ const SaleSchema = new mongoose.Schema(
     TotalSaleAmount: {
       type: Number,
       required: true,
+    },
+    description: {
+      type: String,
+      required: false,
     },
   },
   { timestamps: true }

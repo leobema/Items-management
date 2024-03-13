@@ -11,7 +11,10 @@ app.get("/get/:userID", purchase.getPurchaseData);
 
 app.get("/get/:userID/totalpurchaseamount", purchase.getTotalPurchaseAmount);
 
-// Update Selected Product
+// Delete Selected Purchase Item
+app.get("/delete/:id", purchase.deleteSelectedPurchase);
+
+// Update Selected Purchase
 app.post("/update", purchase.updateSelectedPurchase);
 
 

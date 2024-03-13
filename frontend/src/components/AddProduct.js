@@ -14,7 +14,7 @@ export default function AddProduct({
     design: "",
     description: "",
     terminado: "",
-    stock: "0",
+    stock: "",
   });
   console.log("----",product)
   const [open, setOpen] = useState(true);

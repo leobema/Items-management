@@ -9,7 +9,7 @@ function PurchaseDetails() {
   const [products, setAllProducts] = useState([]);
   const [updatePage, setUpdatePage] = useState(true);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [updatePurchaseData, setUpdatePurchaseData] = useState([]);
+  const [updatePurchase, setUpdatePurchase] = useState([]);
 
   const authContext = useContext(AuthContext);
 
@@ -46,7 +46,7 @@ function PurchaseDetails() {
   // Modal for Product UPDATE
   const updatePurchaseModalSetting = (selectedPurchaseData) => {
     console.log("Clicked: edit");
-    setUpdatePurchaseData(selectedPurchaseData);
+    setUpdatePurchase(selectedPurchaseData);
     setShowUpdateModal(!showUpdateModal);
   };
 
@@ -80,7 +80,7 @@ function PurchaseDetails() {
         )},
          {showUpdateModal && (
           <UpdatePurchase
-            updatePurchaseData={updatePurchaseData}
+            updatePurchaseData={updatePurchase}
             updateModalSetting={updatePurchaseModalSetting}
           />
         )}
@@ -110,13 +110,19 @@ function PurchaseDetails() {
                   Diseño
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
-                  Cantidad
+                  Und Compradas
+                </th>
+                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                  Costo/und
+                </th>
+                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                  Total Costo $
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
                   Fecha
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
-                  Monto de Compra
+                  Observación
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
                   Acción
@@ -132,11 +138,17 @@ function PurchaseDetails() {
                       {element.ProductID?.name}
                     </td>
                      <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                      {element.design}
+                      {element.ProductID?.design}
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                       {element.stock}
                     </td> 
+                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                      ${element.TotalPurchaseAmount}
+                    </td>
+                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                      ${element.TotalPurchaseAmount*element.stock}
+                    </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                       {new Date(element.PurchaseDate).toLocaleDateString() ===
                       new Date().toLocaleDateString()
@@ -144,12 +156,13 @@ function PurchaseDetails() {
                         : element.PurchaseDate}
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                      ${element.TotalPurchaseAmount}
-                    </td>
+                      {element.description}
+                    </td> 
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                       <span
                         className="text-green-700 cursor-pointer"
                         onClick={() => updatePurchaseModalSetting(element)}
+                        
                       >
                         Editar{" "}
                       </span>

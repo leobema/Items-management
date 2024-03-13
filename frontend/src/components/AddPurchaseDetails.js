@@ -11,9 +11,12 @@ export default function AddPurchaseDetails({
   const [purchase, setPurchase] = useState({
     userID: authContext.user,
     productID: "",
+    name: "",
+    design: "",
     stock: "",
     purchaseDate: "",
     totalPurchaseAmount: "",
+    description: "",
   });
   const [open, setOpen] = useState(true);
   const cancelButtonRef = useRef(null);
@@ -94,15 +97,15 @@ export default function AddPurchaseDetails({
                         <div className="grid gap-4 mb-4 sm:grid-cols-2">
                           <div>
                             <label
-                              htmlFor="productID"
+                              htmlFor="name"
                               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
                               Nombre de Producto
                             </label>
                             <select
-                              id="productID"
+                              id="name"
                               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                              name="productID"
+                              name="name"
                               onChange={(e) =>
                                 handleInputChange(e.target.name, e.target.value)
                               }
@@ -119,20 +122,20 @@ export default function AddPurchaseDetails({
                           </div>
                           <div>
                             <label
-                              htmlFor="productID"
+                              htmlFor="design"
                               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
-                              Nombre de Producto
+                              Diseño
                             </label>
                             <select
-                              id="productID"
+                              id="design"
                               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                              name="productID"
+                              name="design"
                               onChange={(e) =>
                                 handleInputChange(e.target.name, e.target.value)
                               }
                             >
-                              <option selected="">Select Products</option>
+                              <option selected="">Select Diseño</option>
                               {products.map((element, index) => {
                                 return (
                                   <option key={element._id} value={element._id}>
@@ -163,7 +166,7 @@ export default function AddPurchaseDetails({
                           </div> */}
                           <div>
                             <label
-                              for="stock"
+                              htmlFor="stock"
                               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
                               Cantidad
@@ -221,6 +224,31 @@ export default function AddPurchaseDetails({
                                 handleInputChange(e.target.name, e.target.value)
                               }
                             />
+                          </div>
+                          <div className="sm:col-span-2">
+                            <label
+                              htmlFor="description"
+                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >
+                              Descripcion
+                            </label>
+                            <textarea
+                              id="description"
+                              rows="5"
+                              name="description"
+                              className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                              placeholder="Descripcion del producto..."
+                              value={purchase.description}
+                              onChange={(e) =>
+                                handleInputChange(e.target.name, e.target.value)
+                              }
+                            >
+                              Standard glass, 3.8GHz 8-core 10th-generation
+                              Intel Core i7 processor, Turbo Boost up to 5.0GHz,
+                              16GB 2666MHz DDR4 memory, Radeon Pro 5500 XT with
+                              8GB of GDDR6 memory, 256GB SSD storage, Gigabit
+                              Ethernet, Magic Mouse 2, Magic Keyboard - US
+                            </textarea>
                           </div>
                         </div>
                         <div className="flex items-center space-x-4">

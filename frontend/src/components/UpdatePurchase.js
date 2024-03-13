@@ -8,7 +8,7 @@ export default function UpdatePurchase({
 }) {
   const { _id, name, design, description, stock } = updatePurchaseData;
   const [purchase, setPurchase] = useState({
-    productID: _id,
+    purchaseID: _id,
     name: name,
     design: design,
     description: description,
@@ -23,6 +23,7 @@ export default function UpdatePurchase({
   };
 
   const updatePurchase = () => {
+    
     fetch("http://localhost:4000/api/purchase/update", {
       method: "POST",
       headers: {
@@ -94,6 +95,7 @@ export default function UpdatePurchase({
                             >
                               Nombre
                             </label>
+                            
                             <input
                               type="text"
                               name="name"
@@ -127,7 +129,7 @@ export default function UpdatePurchase({
                           </div>
                           <div>
                             <label
-                              for="stock"
+                              htmlFor="stock"
                               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
                               Stock

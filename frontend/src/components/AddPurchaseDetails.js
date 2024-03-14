@@ -2,11 +2,12 @@ import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { PlusIcon } from "@heroicons/react/24/outline";
 
+
 export default function AddPurchaseDetails({
-  addSaleModalSetting,
+  addPurchaseModalSetting,
   products,
   handlePageUpdate,
-  authContext
+  authContext,
 }) {
   const [purchase, setPurchase] = useState({
     userID: authContext.user,
@@ -21,15 +22,15 @@ export default function AddPurchaseDetails({
   const [open, setOpen] = useState(true);
   const cancelButtonRef = useRef(null);
 
-  console.log("PPu: ", purchase);
+  console.log("PPu: ", purchase); 
 
   // Handling Input Change for input fields
   const handleInputChange = (key, value) => {
     setPurchase({ ...purchase, [key]: value });
   };
 
-  // POST Data
-  const addSale = () => {
+  // POST Data 
+  const addPurchase = () => {
     fetch("http://localhost:4000/api/purchase/add", {
       method: "POST",
       headers: {
@@ -40,7 +41,7 @@ export default function AddPurchaseDetails({
       .then((result) => {
         alert("Purchase ADDED");
         handlePageUpdate();
-        addSaleModalSetting();
+        addPurchaseModalSetting();
       })
       .catch((err) => console.log(err));
   };
@@ -97,24 +98,25 @@ export default function AddPurchaseDetails({
                         <div className="grid gap-4 mb-4 sm:grid-cols-2">
                           <div>
                             <label
-                              htmlFor="name"
+                              htmlFor="productID"
                               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
                               Nombre de Producto
                             </label>
                             <select
-                              id="name"
+                              id="productID"
                               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                              name="name"
+                              name="productID"
                               onChange={(e) =>
                                 handleInputChange(e.target.name, e.target.value)
                               }
+                              defaultValue=""
                             >
-                              <option selected="">Select Products</option>
-                              {products.map((element, index) => {
+                              <option value="">Select Products</option>
+                              {products.map((product, index) => {
                                 return (
-                                  <option key={element._id} value={element._id}>
-                                    {element.name}
+                                  <option key={product._id} value={product._id}>
+                                    {product.name}
                                   </option>
                                 );
                               })}
@@ -134,8 +136,9 @@ export default function AddPurchaseDetails({
                               onChange={(e) =>
                                 handleInputChange(e.target.name, e.target.value)
                               }
+                              defaultValue=""
                             >
-                              <option selected="">Select Diseño</option>
+                              <option value="">Select Diseño</option>
                               {products.map((element, index) => {
                                 return (
                                   <option key={element._id} value={element._id}>
@@ -188,7 +191,7 @@ export default function AddPurchaseDetails({
                               htmlFor="totalPurchaseAmount"
                               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
-                              Total Monto Compra
+                              Costo/und
                             </label>
                             <input
                               type="number"
@@ -285,14 +288,14 @@ export default function AddPurchaseDetails({
                   <button
                     type="button"
                     className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-                    onClick={addSale}
+                    onClick={addPurchase}
                   >
                     Agregar
                   </button>
                   <button
                     type="button"
                     className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                    onClick={() => addSaleModalSetting()}
+                    onClick={() => addPurchaseModalSetting()}
                     ref={cancelButtonRef}
                   >
                     Cancelar

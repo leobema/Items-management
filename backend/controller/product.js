@@ -8,9 +8,9 @@ const addProduct = (req, res) => {
   const addProduct = new Product({
     userID: req.body.userId,
     name: req.body.name,
-    design: req.body.design,
+    designs: req.body.designs,
+    price: req.body.price,
     stock: req.body.stock,
-    tipo: "leo",
     description: req.body.description,
   });
 
@@ -54,9 +54,10 @@ const updateSelectedProduct = async (req, res) => {
       { _id: req.body.productID },
       {
         name: req.body.name,
-        design: req.body.design,
+        designs: req.body.designs,
         description: req.body.description,
         terminado: req.body.terminado,
+        price: req.body.price,
         stock: req.body.stock,
       },
       { new: true }

@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import AddSale from "../components/AddSale";
+import UpdateSale from "../components/UpdateSale"
 import AuthContext from "../AuthContext";
+
 
 function Sales() {
   const [showSaleModal, setShowSaleModal] = useState(false);
@@ -8,14 +10,17 @@ function Sales() {
   const [products, setAllProducts] = useState([]);
   const [stores, setAllStores] = useState([]);
   const [updatePage, setUpdatePage] = useState(true);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [updateSales, setUpdateSale] = useState([]);
+
 
   const authContext = useContext(AuthContext);
 
   useEffect(() => {
-    fetchSalesData();
+    fetchSalesData(); 
     fetchProductsData();
     fetchStoresData();
-  }, [updatePage]);
+  }, [updatePage]); 
 
   // Fetching Data of All Sales
   const fetchSalesData = () => {
@@ -51,6 +56,13 @@ function Sales() {
     setShowSaleModal(!showSaleModal);
   };
 
+    // Modal for Product UPDATE
+    const updateSalesUpModalSetting = (selectedSalesData) => {
+      console.log("Clicked: edit");
+      setUpdateSale(selectedSalesData);
+      setShowUpdateModal(!showUpdateModal);
+    };
+
   // Delete item
   const deleteItem = (id) => {
     console.log("Sales ID: ", id);
@@ -77,6 +89,12 @@ function Sales() {
             stores={stores}
             handlePageUpdate={handlePageUpdate}
             authContext={authContext}
+          />
+        )}
+        {showUpdateModal && (
+          <UpdateSale
+            updateSalesData={updateSales}
+            updateModalSetting={updateSalesUpModalSetting}
           />
         )}
         {/* Table  */}
@@ -159,7 +177,7 @@ function Sales() {
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                       <span
                         className="text-green-700 cursor-pointer"
-                        //onClick={() => updatePurchaseModalSetting(element)}
+                        onClick={() => updateSalesUpModalSetting(element)}
                       >
                         Editar{" "}
                       </span>

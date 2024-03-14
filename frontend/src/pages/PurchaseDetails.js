@@ -25,7 +25,7 @@ function PurchaseDetails() {
       .then((data) => {
         setAllPurchaseData(data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log("error en la pag de compra"));
   };
 
   // Fetching Data of All Products
@@ -37,9 +37,9 @@ function PurchaseDetails() {
       })
       .catch((err) => console.log(err));
   };
-
+ 
   // Modal for Sale Add
-  const addSaleModalSetting = () => {
+  const addPurchaseModalSetting = () => {
     setPurchaseModal(!showPurchaseModal);
   };
 
@@ -72,7 +72,7 @@ function PurchaseDetails() {
       <div className=" flex flex-col gap-5 w-11/12">
         {showPurchaseModal && (
           <AddPurchaseDetails
-            addSaleModalSetting={addSaleModalSetting}
+            addPurchaseModalSetting={addPurchaseModalSetting}
             products={products}
             handlePageUpdate={handlePageUpdate}
             authContext = {authContext}
@@ -82,6 +82,7 @@ function PurchaseDetails() {
           <UpdatePurchase
             updatePurchaseData={updatePurchase}
             updateModalSetting={updatePurchaseModalSetting}
+            products={products}
           />
         )}
 
@@ -94,7 +95,7 @@ function PurchaseDetails() {
             <div className="flex gap-4">
               <button
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold p-2 text-xs  rounded"
-                onClick={addSaleModalSetting}
+                onClick={addPurchaseModalSetting}
               >
                 Agregar Compra
               </button>

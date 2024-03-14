@@ -6,10 +6,11 @@ const addPurchase = (req, res) => {
   const addPurchaseDetails = new Purchase({
     userID: req.body.userID,
     ProductID: req.body.productID,
-    name: req.body.name,
     design: req.body.design,
     stock: req.body.stock,
+    PurchaseStock: req.body.purchaseStock,
     PurchaseDate: req.body.purchaseDate,
+    
     TotalPurchaseAmount: req.body.totalPurchaseAmount,
     description: req.body.description,
   });
@@ -21,7 +22,8 @@ const addPurchase = (req, res) => {
       res.status(200).send(result);
     })
     .catch((err) => {
-      res.status(402).send(err);
+      console.log(err)
+      res.status(402).send("error acá en compra");
     });
 };
 
@@ -51,28 +53,17 @@ const getTotalPurchaseAmount = async (req, res) => {
   res.json({ totalPurchaseAmount });
 };
 
-/* // Delete Selected Purchase
-const deleteSelectedPurchase = async (req, res) => {
-  const deletePurchase = await Purchase.deleteOne(
-    { _id: req.params.id }
-  );
-  const deletePurchaseProduct = await Purchase.deleteOne(
-    { ProductID: req.params.id }
-  );
-
-  res.json({ deleteProduct, deletePurchaseProduct });
-}; */
 
 // Update Selected Purchase
 const updateSelectedPurchase = async (req, res) => {
   try {
     const updatedResult = await Purchase.findByIdAndUpdate(
-      { _id: req.body.productID },
+      { _id: req.body.purchaseID },
       {
-        name: req.body.name,
+        ProductID: req.body.productID,
         design: req.body.design,
         description: req.body.description,
-        terminado: req.body.terminado,
+        price: req.body.price,
         stock: req.body.stock,
       },
       { new: true }

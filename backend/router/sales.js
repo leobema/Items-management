@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const sales = require("../controller/sales");
 
-// Add Sales
+// Add Sales  
 app.post("/add", sales.addSales);
 
 // Get All Sales
@@ -11,6 +11,10 @@ app.get("/getmonthly", sales.getMonthlySales);
 
 // Delete Selected Sales Item
 app.get("/delete/:id", sales.deleteSelectedSales);
+
+// Update Selected Sales
+app.post("/update", sales.updateSelectedSales);
+
 
 
 app.get("/get/:userID/totalsaleamount", sales.getTotalSalesAmount);

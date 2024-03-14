@@ -16,7 +16,7 @@ export default function AddSale({
     storeID: "",
     stockSold: "",
     saleDate: "",
-    totalSaleAmount: "",
+    totalSaleAmount: "", 
     description: "",
   });
   const [open, setOpen] = useState(true);

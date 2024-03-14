@@ -5,19 +5,16 @@ const PurchaseSchema = new mongoose.Schema(
     userID: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "users",
-      required: true,
+      required: false,
     },
     ProductID: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "product",
-      required: true,
-    },
-    name: {
-      type: String,
       required: false,
     },
     design: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "design",
       required: false,
     },
     stock: {
@@ -32,10 +29,14 @@ const PurchaseSchema = new mongoose.Schema(
       type: Number,
       required: false,
     },
-    description: String,
+    description: {
+      type: String,
+      required: false,
+    },
   },
   { timestamps: true }
 );
+
 
 const Purchase = mongoose.model("purchase", PurchaseSchema);
 module.exports = Purchase;

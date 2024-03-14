@@ -229,13 +229,19 @@ function Inventory() {
                   Stock
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
-                  Descripcion
+                  Costo/und
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
-                  Disponibilidad
+                 Valor/total
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
-                  Terminado
+                Observación
+                </th>
+                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                  Disponible?
+                </th>
+                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                  Terminado?
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
                   Acción
@@ -251,10 +257,16 @@ function Inventory() {
                       {element.name}
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                      {element.design}
+                      {element.designs.join(', ')}
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                       {element.stock}
+                    </td>
+                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                      ${element.price}
+                    </td>
+                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                      ${element.price*element.stock}
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                       {element.description}

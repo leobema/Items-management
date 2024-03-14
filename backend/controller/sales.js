@@ -4,7 +4,7 @@ const soldStock = require("../controller/soldStock");
 // Add Sales
 const addSales = (req, res) => {
   const addSale = new Sales({
-    userID: req.body.userID,
+    userID: req.body.userID, 
     ProductID: req.body.productID,
     design: req.body.design,
     StoreID: req.body.storeID,
@@ -50,8 +50,28 @@ const getTotalSalesAmount = async(req,res) => {
     totalSaleAmount += sale.TotalSaleAmount;
   })
   res.json({totalSaleAmount});
-
 }
+
+// Update Selected Sales
+const updateSelectedSales = async (req, res) => {
+  try {
+    const updatedResult = await Sales.findByIdAndUpdate(
+      { _id: req.body.salesID },
+      {
+        name: req.body.name,
+        design: req.body.design,
+        description: req.body.description,
+        stock: req.body.stock,
+      },
+      { new: true }
+    );
+    console.log(updatedResult);
+    res.json(updatedResult);
+  } catch (error) {
+    console.log(error);
+    res.status(402).send("Error");
+  }
+}; 
 
 const getMonthlySales = async (req, res) => {
   try {
@@ -77,4 +97,4 @@ const getMonthlySales = async (req, res) => {
 
 
 
-module.exports = { addSales, getMonthlySales, getSalesData,  getTotalSalesAmount, deleteSelectedSales};
+module.exports = { addSales, getMonthlySales, getSalesData,  getTotalSalesAmount, deleteSelectedSales, updateSelectedSales};

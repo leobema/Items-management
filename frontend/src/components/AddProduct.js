@@ -8,15 +8,21 @@ export default function AddProduct({
   handlePageUpdate,
 }) {
   const authContext = useContext(AuthContext);
+
+  const [designs, setDesigns] = useState([''])
+
   const [product, setProduct] = useState({
     userId: authContext.user,
     name: "",
-    design: "",
+    designs: designs,
+    price: "",
     description: "",
     terminado: "",
     stock: "",
   });
-  console.log("----",product)
+
+  // console.log("----",product)
+
   const [open, setOpen] = useState(true);
   const cancelButtonRef = useRef(null);
 
@@ -38,6 +44,18 @@ export default function AddProduct({
         addProductModalSetting();
       })
       .catch((err) => console.log(err));
+  };
+
+  const handleAddDesign = () => {
+    setDesigns([...designs, ''])
+    setProduct({ ...product, designs: designs });
+  };
+
+  const handleEditDesign = (index, value) => {
+    const designsTmp = [...designs]
+    designsTmp[index] = value
+    setDesigns([...designsTmp])
+    setProduct({ ...product, designs: designs });
   };
 
   return (
@@ -89,7 +107,7 @@ export default function AddProduct({
                         Agregar Producto
                       </Dialog.Title>
                       <form action="#">
-                        <div className="grid gap-4 mb-4 sm:grid-cols-2">
+                        <div className="grid gap-4 mb-4 sm:grid-cols-1">
                           <div>
                             <label
                               htmlFor="name"
@@ -109,31 +127,39 @@ export default function AddProduct({
                               placeholder="Ej. Remera"
                             />
                           </div>
-                          <div>
-                            <label
-                              htmlFor="manufacturer"
-                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            >
-                              Diseño
-                            </label>
-                            <input
-                              type="text"
-                              name="design"
-                              id="design"
-                              value={product.design}
-                              onChange={(e) =>
-                                handleInputChange(e.target.name, e.target.value)
-                              }
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                              placeholder="Ej. Sonic"
-                            />
-                          </div>
+                          {designs.map((design, index) => (
+                            <div>
+                              <label
+                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                              >
+                                Diseño
+                              </label>
+                              <div key={index}>
+                                <input
+                                  type="text"
+                                  value={design}
+                                  onChange={(e) => handleEditDesign(index, e.target.value)}
+                                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                  placeholder="Ej. Sonic"
+                                />
+                              </div>
+                            </div>
+                          ))}
+                          <button
+                            type="button"
+                            className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
+                            onClick={() => handleAddDesign() }
+                          >
+                            + agregar diseño
+                          </button>
+                        </div>
+                        <div className="grid gap-4 mb-4 sm:grid-cols-2">
                            <div>
                             <label
                               for="price"
                               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
-                              Precio
+                              Costo/Und
                             </label>
                             <input
                               type="number"
@@ -209,7 +235,7 @@ export default function AddProduct({
                               htmlFor="description"
                               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
-                              Description
+                              Observación
                             </label>
                             <textarea
                               id="description"
@@ -218,6 +244,7 @@ export default function AddProduct({
                               className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                               placeholder="Descripcion del producto..."
                               value={product.description}
+                              maxLength={20}
                               onChange={(e) =>
                                 handleInputChange(e.target.name, e.target.value)
                               }

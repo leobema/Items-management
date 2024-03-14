@@ -4,13 +4,15 @@ import { PlusIcon } from "@heroicons/react/24/outline";
 
 export default function UpdatePurchase({
   updatePurchaseData,
-  updateModalSetting,
+  updateModalSetting, 
+  products,
 }) {
-  const { _id, name, design, description, stock } = updatePurchaseData;
+  const { _id, ProductID, design, description, stock } = updatePurchaseData;
+
   const [purchase, setPurchase] = useState({
     purchaseID: _id,
-    name: name,
-    design: design,
+    productID: ProductID._id,
+    design: design._id,
     description: description,
     stock: stock, 
   });
@@ -23,8 +25,8 @@ export default function UpdatePurchase({
   };
 
   const updatePurchase = () => {
-    
-    fetch("http://localhost:4000/api/purchase/update", {
+    console.log(("Purchase ID: ", _id))
+    fetch("http://localhost:4000/api/purchase/update/", {
       method: "POST",
       headers: {
         "Content-type": "application/json",
@@ -37,6 +39,7 @@ export default function UpdatePurchase({
       })
       .catch((err) => console.log(err));
   };
+
 
   return (
     // Modal
@@ -88,25 +91,31 @@ export default function UpdatePurchase({
                       </Dialog.Title>
                       <form action="#">
                         <div className="grid gap-4 mb-4 sm:grid-cols-2">
-                          <div>
+                        <div>
                             <label
-                              htmlFor="name"
+                              htmlFor="productID"
                               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
-                              Nombre
+                              Nombre de Producto
                             </label>
-                            
-                            <input
-                              type="text"
-                              name="name"
-                              id="name"
-                              value={purchase.name}
+                            <select
+                              id="productID"
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                              name="productID"
                               onChange={(e) =>
                                 handleInputChange(e.target.name, e.target.value)
                               }
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                              placeholder="Ex. Apple iMac 27&ldquo;"
-                            />
+                              defaultValue={purchase.productID}
+                            >
+                              <option value="">Select Products</option>
+                              {products.map((product, index) => {
+                                return (
+                                  <option key={product._id} value={product._id}>
+                                    {product.name}
+                                  </option>
+                                );
+                              })}
+                            </select>
                           </div>
                           <div>
                             <label
@@ -115,17 +124,24 @@ export default function UpdatePurchase({
                             >
                               Diseño
                             </label>
-                            <input
-                              type="text"
-                              name="design"
+                            <select
                               id="design"
-                              value={purchase.design}
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                              name="design"
                               onChange={(e) =>
                                 handleInputChange(e.target.name, e.target.value)
                               }
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                              placeholder="Ej. Sonic"
-                            />
+                              defaultValue=""
+                            >
+                              <option value="">Select Diseño</option>
+                              {products.map((element, index) => {
+                                return (
+                                  <option key={element._id} value={element._id}>
+                                    {element.design}
+                                  </option>
+                                );
+                              })}
+                            </select>
                           </div>
                           <div>
                             <label

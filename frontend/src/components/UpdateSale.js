@@ -3,35 +3,37 @@ import { Dialog, Transition } from "@headlessui/react";
 import { PlusIcon } from "@heroicons/react/24/outline";
 
 export default function UpdateProduct({
-  updateProductData,
+  updateSalesData,
   updateModalSetting,
 }) {
-  const { _id, name, design, description, stock } = updateProductData;
-  const [product, setProduct] = useState({
+  const { _id, name, design, description, store, stockSold } = updateSalesData;
+  const [sales, setProduct] = useState({
     productID: _id,
     name: name,
+    store: store,
     design: design,
     description: description,
-    stock: stock,
+    stockSold: stockSold,
+
   });
   const [open, setOpen] = useState(true);
   const cancelButtonRef = useRef(null);
 
   const handleInputChange = (key, value) => {
     console.log(key);
-    setProduct({ ...product, [key]: value });
+    setProduct({ ...sales, [key]: value });
   };
 
-  const updateProduct = () => {
-    fetch("http://localhost:4000/api/product/update", {
+  const updateSale = () => {
+    fetch("http://localhost:4000/api/sale/update", {
       method: "POST",
       headers: {
         "Content-type": "application/json",
       },
-      body: JSON.stringify(product),
+      body: JSON.stringify(sales),
     })
       .then((result) => {
-        alert("Product Updated");
+        alert("Sale Updated");
         setOpen(false);
       })
       .catch((err) => console.log(err));
@@ -98,7 +100,7 @@ export default function UpdateProduct({
                               type="text"
                               name="name"
                               id="name"
-                              value={product.name}
+                              value={sales.name}
                               onChange={(e) =>
                                 handleInputChange(e.target.name, e.target.value)
                               }
@@ -117,7 +119,7 @@ export default function UpdateProduct({
                               type="text"
                               name="design"
                               id="design"
-                              value={product.design}
+                              value={sales.design}
                               onChange={(e) =>
                                 handleInputChange(e.target.name, e.target.value)
                               }
@@ -127,16 +129,16 @@ export default function UpdateProduct({
                           </div>
                           <div>
                             <label
-                              htmlFor="stock"
+                              htmlFor="stockSold"
                               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
                               Stock
                             </label>
                             <input
                               type="number"
-                              name="stock"
-                              id="stock"
-                              value={product.stock}
+                              name="stockSold"
+                              id="stockSold"
+                              value={sales.stockSold}
                               onChange={(e) =>
                                 handleInputChange(e.target.name, e.target.value)
                               }
@@ -157,7 +159,7 @@ export default function UpdateProduct({
                               name="description"
                               className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                               placeholder="Write a description..."
-                              value={product.description}
+                              value={sales.description}
                               onChange={(e) =>
                                 handleInputChange(e.target.name, e.target.value)
                               }
@@ -204,7 +206,7 @@ export default function UpdateProduct({
                   <button
                     type="button"
                     className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-                    onClick={updateProduct}
+                    onClick={updateSale}
                   >
                     Actualizar Producto
                   </button>

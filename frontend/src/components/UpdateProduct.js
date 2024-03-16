@@ -1,21 +1,30 @@
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useRef, useState, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { PlusIcon } from "@heroicons/react/24/outline";
 
 export default function UpdateProduct({
   updateProductData,
   updateModalSetting,
+  handlePageUpdate,
 }) {
-  const { _id, name, design, description, stock } = updateProductData;
-  const [product, setProduct] = useState({
-    productID: _id,
-    name: name,
-    design: design,
-    description: description,
-    stock: stock,
-  });
+  const [designsData, setDesignsData] = useState([{name: '', stock: 1}]);
+  const [product, setProduct] = useState({});
   const [open, setOpen] = useState(true);
   const cancelButtonRef = useRef(null);
+
+  // Efecto para establecer los valores iniciales una vez que el componente se haya montado
+  useEffect(() => {
+    const { _id, name, designs, price, description } = updateProductData;
+    setDesignsData([...designs]);
+    setProduct({
+      productID: _id,
+      name: name,
+      designs: [...designs],
+      price: price,
+      description: description,
+      
+    });
+  }, [updateProductData]);
 
   const handleInputChange = (key, value) => {
     console.log(key);
@@ -23,18 +32,45 @@ export default function UpdateProduct({
   };
 
   const updateProduct = () => {
+    const productData = { ...product, designs: designsData };
+
     fetch("http://localhost:4000/api/product/update", {
       method: "POST",
       headers: {
         "Content-type": "application/json",
       },
-      body: JSON.stringify(product),
+      body: JSON.stringify(productData),
     })
       .then((result) => {
         alert("Product Updated");
+        handlePageUpdate();
         setOpen(false);
       })
       .catch((err) => console.log(err));
+  };
+
+  const handleAddAtribute = () => {
+    setDesignsData([...designsData, 
+      {name: "", stock: 1}])
+    //setStocksData([...stockData, ''])
+    /* setProduct({ 
+      ...product, 
+      designs: stockData, 
+      stock: stockData }); */
+  };
+
+
+  const handleEditDesign = (index, value) => {
+    const updatedDesigns = [...designsData]; // Clonar el array original
+    updatedDesigns[index] = { ...updatedDesigns[index], name: value }; // Actualizar el diseño en la posición específica
+    setDesignsData(updatedDesigns); // Actualizar el estado local de designsData
+  };
+  
+
+  const handleEditStock = (index, value) => {
+    const updatedDesigns = [...designsData]; // Clonar el array original
+    updatedDesigns[index] = { ...updatedDesigns[index], stock: value }; // Actualizar el diseño en la posición específica
+    setDesignsData(updatedDesigns); // Actualizar el estado local de designsData
   };
 
   return (
@@ -87,7 +123,7 @@ export default function UpdateProduct({
                       </Dialog.Title>
                       <form action="#">
                         <div className="grid gap-4 mb-4 sm:grid-cols-2">
-                          <div>
+                        <div className=" col-span-2">
                             <label
                               htmlFor="name"
                               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -103,45 +139,66 @@ export default function UpdateProduct({
                                 handleInputChange(e.target.name, e.target.value)
                               }
                               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                              placeholder="Ex. Apple iMac 27&ldquo;"
+                              placeholder="Ej. Remera"
                             />
                           </div>
+                          {designsData.map((design, index) => (
+                            <div key={index}>
+                              <div>
+                              <label
+                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                              >
+                                Diseño {index + 1}
+                              </label>
+                                <input
+                                  type="text"
+                                  value={design.name}
+                                  onChange={(e) => handleEditDesign(index, e.target.value)}
+                                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                  placeholder="Ej. Sonic"
+                                /> 
+                            </div>
+                              <label
+                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                              >
+                                Stock {index + 1}
+                              </label>
+                              <div>
+                                <input
+                                  type="text"
+                                  value={design.stock}
+                                  onChange={(e) => handleEditStock(index, e.target.value)}
+                                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                  placeholder="0 - 999"
+                                />
+                              </div>
+                            </div>
+                            
+                          ))}
+                           <button
+                            type="button"
+                            className="w-auto col-span-full justify-center rounded-md bg-blue-600 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:w-auto"
+                            onClick={() => handleAddAtribute() }
+                          >
+                            + agregar diseño
+                          </button>
                           <div>
                             <label
-                              htmlFor="design"
+                              for="price"
                               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
-                              Diseño
-                            </label>
-                            <input
-                              type="text"
-                              name="design"
-                              id="design"
-                              value={product.design}
-                              onChange={(e) =>
-                                handleInputChange(e.target.name, e.target.value)
-                              }
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                              placeholder="Ej. Sonic"
-                            />
-                          </div>
-                          <div>
-                            <label
-                              htmlFor="stock"
-                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            >
-                              Stock
+                              Costo/Und
                             </label>
                             <input
                               type="number"
-                              name="stock"
-                              id="stock"
-                              value={product.stock}
+                              name="price"
+                              id="price"
+                              value={product.price}
                               onChange={(e) =>
                                 handleInputChange(e.target.name, e.target.value)
                               }
                               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                              placeholder="0 - 999"
+                              placeholder="$299"
                             />
                           </div>
                           <div className="sm:col-span-2">

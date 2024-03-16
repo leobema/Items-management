@@ -8,20 +8,15 @@ export default function AddProduct({
   handlePageUpdate,
 }) {
   const authContext = useContext(AuthContext);
-
-  const [designs, setDesigns] = useState([''])
-
+  const [designs, setDesigns] = useState([{name:'', stock:1}]);
   const [product, setProduct] = useState({
     userId: authContext.user,
     name: "",
-    designs: designs,
+    designs: [],
     price: "",
     description: "",
     terminado: "",
-    stock: "",
   });
-
-  // console.log("----",product)
 
   const [open, setOpen] = useState(true);
   const cancelButtonRef = useRef(null);
@@ -31,12 +26,14 @@ export default function AddProduct({
   };
 
   const addProduct = () => {
+    const productData = { ...product, designs };
+
     fetch("http://localhost:4000/api/product/add", {
       method: "POST",
       headers: {
         "Content-type": "application/json",
       },
-      body: JSON.stringify(product),
+      body: JSON.stringify(productData),
     })
       .then((result) => {
         alert("Product ADDED");
@@ -46,16 +43,23 @@ export default function AddProduct({
       .catch((err) => console.log(err));
   };
 
-  const handleAddDesign = () => {
-    setDesigns([...designs, ''])
-    setProduct({ ...product, designs: designs });
+  const handleAddAtribute = () => {
+    setDesigns([
+      ...designs,
+      {name: "", stock: 1},
+    ]);
   };
 
   const handleEditDesign = (index, value) => {
-    const designsTmp = [...designs]
-    designsTmp[index] = value
-    setDesigns([...designsTmp])
-    setProduct({ ...product, designs: designs });
+    const updatedDesigns = [...designs];
+    updatedDesigns[index] = { ...updatedDesigns[index], name: value };
+    setDesigns([...updatedDesigns]);
+  };
+
+  const handleEditStock = (index, value) => {
+    const updatedDesigns = [...designs];
+    updatedDesigns[index] = { ...updatedDesigns[index], stock: value };
+    setDesigns([...updatedDesigns]);
   };
 
   return (
@@ -107,8 +111,8 @@ export default function AddProduct({
                         Agregar Producto
                       </Dialog.Title>
                       <form action="#">
-                        <div className="grid gap-4 mb-4 sm:grid-cols-1">
-                          <div>
+                        <div className="grid grid-flow-row gap-4 mb-4 mt-4 sm:grid-cols-2">
+                          <div className="col-span-2">
                             <label
                               htmlFor="name"
                               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -127,31 +131,53 @@ export default function AddProduct({
                               placeholder="Ej. Remera"
                             />
                           </div>
-                          {designs.map((design, index) => (
-                            <div>
-                              <label
-                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                              >
-                                Diseño
-                              </label>
-                              <div key={index}>
-                                <input
-                                  type="text"
-                                  value={design}
-                                  onChange={(e) => handleEditDesign(index, e.target.value)}
-                                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                  placeholder="Ej. Sonic"
-                                />
+                        </div>
+                        <div className="grid grid-flow-row gap-4 my-4 grid-cols-2">
+                          <div className="col-span-2">
+                            {designs.map((design, index) => (
+                              <div key={index} className="grid gap-4 my-2 grid-cols-2">
+                                <div>
+                                  <label
+                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                  >
+                                    Diseño {index + 1}
+                                  </label>
+                                  <input
+                                    type="text"
+                                    value={design.name}
+                                    onChange={(e) => handleEditDesign(index, e.target.value)}
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    placeholder="Ej. Sonic"
+                                  />
+                                </div>
+
+                                <div>
+                                  <label
+                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                  >
+                                    Stock 
+                                  </label>
+                                  <input
+                                    type="number"
+                                    value={design.stock}
+                                    onChange={(e) => handleEditStock(index, e.target.value)}
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    placeholder="0 - 999"
+                                  />
+                                </div>
                               </div>
-                            </div>
-                          ))}
-                          <button
-                            type="button"
-                            className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-                            onClick={() => handleAddDesign() }
-                          >
-                            + agregar diseño
-                          </button>
+                            ))}
+
+                          </div>
+                          <div className="col-span-2">
+                            <button
+                              type="button"
+                              className="w-auto col-span-full justify-center rounded-md bg-blue-600 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:w-auto"
+                              onClick={() => handleAddAtribute() }
+                            >
+                              + agregar diseño
+                            </button>
+                          </div>
                         </div>
                         <div className="grid gap-4 mb-4 sm:grid-cols-2">
                            <div>
@@ -173,26 +199,6 @@ export default function AddProduct({
                               placeholder="$299"
                             />
                           </div>
-                          <div>
-                            <label
-                              for="stock"
-                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            >
-                              Stock
-                            </label>
-                            <input
-                              type="number"
-                              name="stock"
-                              id="stock"
-                              value={product.stock}
-                              onChange={(e) =>
-                                handleInputChange(e.target.name, e.target.value)
-                              }
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                              placeholder="0 - 999"
-                            />
-                          </div>
-
                           <div className="">
                             <label
                               

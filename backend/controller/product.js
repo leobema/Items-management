@@ -10,7 +10,6 @@ const addProduct = (req, res) => {
     name: req.body.name,
     designs: req.body.designs,
     price: req.body.price,
-    stock: req.body.stock,
     description: req.body.description,
   });
 
@@ -58,7 +57,6 @@ const updateSelectedProduct = async (req, res) => {
         description: req.body.description,
         terminado: req.body.terminado,
         price: req.body.price,
-        stock: req.body.stock,
       },
       { new: true }
     );

@@ -1,5 +1,16 @@
 const mongoose = require("mongoose");
 
+const DesignSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  stock: {
+    type: Number,
+    required: true,
+  },
+});
+
 const ProductSchema = new mongoose.Schema(
   {
     userID: {
@@ -16,12 +27,8 @@ const ProductSchema = new mongoose.Schema(
         required: false,
     },
     designs: {
-      type: [String],
+      type: [DesignSchema],
       required: false,
-    },
-    stock: {
-      type: Number,
-      required: true,
     },
     price: {
       type: Number,
